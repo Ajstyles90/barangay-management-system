@@ -1,4 +1,23 @@
+import { Resident } from "@/types/resident";
 import { supabase } from "./supabase";
+
+function mapResident(row: {
+  id: number;
+  full_name?: string | null;
+  age?: number | null;
+  purok?: string | null;
+  status?: string | null;
+  photo_url?: string | null;
+}): Resident {
+  return {
+    id: row.id,
+    name: row.full_name ?? "Unnamed Resident",
+    age: Number(row.age ?? 0),
+    purok: row.purok ?? "Unknown",
+    status: row.status ?? "Active",
+    photo_url: row.photo_url ?? null,
+  };
+}
 
 export async function getResidents() {
   const { data, error } = await supabase
@@ -7,49 +26,25 @@ export async function getResidents() {
     .order("id", { ascending: true });
 
   if (error) {
-    console.error(error);
-    return [];
+    console.error("Failed to load residents", error);
+    return [] as Resident[];
   }
 
-  return data.map((resident) => ({
-    id: resident.id,
-    name: resident.full_name,
-    age: resident.age,
-    purok: resident.purok,
-    status: resident.status,
-    photo_url: resident.photo_url ?? null,
-  }));
+  return (data ?? []).map(mapResident);
 }
 
 export async function uploadResidentPhoto(file: File) {
-  console.log("========== START UPLOAD ==========");
-  console.log("Selected file:", file);
-
-  const fileExt = file.name.split(".").pop();
+  const fileExt = file.name.split(".").pop() ?? "jpg";
   const fileName = `${Date.now()}.${fileExt}`;
 
-  console.log("Uploading as:", fileName);
-
-  const { data, error } = await supabase.storage
-    .from("resident-photos")
-    .upload(fileName, file);
-
-  console.log("Upload Response:", data);
-  console.log("Upload Error:", error);
+  const { data, error } = await supabase.storage.from("resident-photos").upload(fileName, file);
 
   if (error) {
-    alert(error.message);
-    console.error(error);
+    console.error("Photo upload failed", error);
     return null;
   }
 
-  const { data: publicUrlData } = supabase.storage
-    .from("resident-photos")
-    .getPublicUrl(fileName);
-
-  console.log("Public URL:", publicUrlData.publicUrl);
-  console.log("========== END UPLOAD ==========");
-
+  const { data: publicUrlData } = supabase.storage.from("resident-photos").getPublicUrl(fileName);
   return publicUrlData.publicUrl;
 }
 
@@ -60,8 +55,6 @@ export async function addResident(resident: {
   status: string;
   photo_url?: string | null;
 }) {
-  console.log("Saving resident:", resident);
-
   const { data, error } = await supabase
     .from("residents")
     .insert([
@@ -76,11 +69,11 @@ export async function addResident(resident: {
     .select();
 
   if (error) {
-    console.error(error);
+    console.error("Failed to add resident", error);
     return null;
   }
 
-  return data;
+  return (data ?? []).map(mapResident);
 }
 
 export async function updateResident(resident: {
@@ -91,8 +84,6 @@ export async function updateResident(resident: {
   status: string;
   photo_url?: string | null;
 }) {
-  console.log("Updating resident:", resident);
-
   const { data, error } = await supabase
     .from("residents")
     .update({
@@ -106,21 +97,18 @@ export async function updateResident(resident: {
     .select();
 
   if (error) {
-    console.error(error);
+    console.error("Failed to update resident", error);
     return null;
   }
 
-  return data;
+  return (data ?? []).map(mapResident);
 }
 
 export async function deleteResident(id: number) {
-  const { error } = await supabase
-    .from("residents")
-    .delete()
-    .eq("id", id);
+  const { error } = await supabase.from("residents").delete().eq("id", id);
 
   if (error) {
-    console.error(error);
+    console.error("Failed to delete resident", error);
     return false;
   }
 

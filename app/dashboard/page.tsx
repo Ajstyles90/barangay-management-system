@@ -1,25 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-import Sidebar from "@/components/layout/Sidebar";
-import Navbar from "@/components/layout/Navbar";
-
-import SectionHeader from "@/components/ui/SectionHeader";
+import Link from "next/link";
+import { ArrowRight, Home, UserCheck, UserX, Users } from "lucide-react";
+import PageShell from "@/components/layout/PageShell";
 import StatCard from "@/components/dashboard/StatCard";
 import QuickActions from "@/components/dashboard/QuickActions";
 import ResidentsChart from "@/components/dashboard/ResidentsChart";
 import RecentActivity from "@/components/dashboard/RecentActivity";
 import ResidentsTable from "@/components/dashboard/ResidentsTable";
 import AnnouncementCard from "@/components/dashboard/AnnouncementCard";
-
-import {
-  Users,
-  UserCheck,
-  UserX,
-  Home,
-} from "lucide-react";
-
 import { getDashboardStats } from "@/lib/residents";
 
 export default function Dashboard() {
@@ -39,76 +29,52 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="flex">
-      <Sidebar />
-
-      <main className="ml-64 flex-1 min-h-screen bg-gray-200">
-        <Navbar />
-
-        <div className="p-8">
-          <SectionHeader
-            title="Dashboard"
-            subtitle="Welcome back, Administrator. Here's an overview of your barangay."
-          />
-
-          {/* Statistics Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mt-10">
-
-            <StatCard
-              title="Residents"
-              value={stats.residentCount}
-              icon={Users}
-            />
-
-            <StatCard
-              title="Active Residents"
-              value={stats.activeCount}
-              icon={UserCheck}
-            />
-
-            <StatCard
-              title="Inactive Residents"
-              value={stats.inactiveCount}
-              icon={UserX}
-            />
-
-            <StatCard
-              title="Households"
-              value={0}
-              icon={Home}
-            />
-
-          </div>
-
-          {/* Quick Actions */}
-          <div className="mt-8">
-            <QuickActions />
-          </div>
-
-          {/* Chart + Recent Activity */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
-
-            <div className="lg:col-span-2">
-              <ResidentsChart />
+    <PageShell title="Dashboard" subtitle="Welcome back, Administrator. Here's an overview of your barangay." action={<Link href="/residents" className="inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700">View Residents <ArrowRight size={16} /></Link>}>
+      <div className="grid gap-6 xl:grid-cols-[1.3fr_0.7fr]">
+        <div className="rounded-[28px] border border-slate-200 bg-white/90 p-6 shadow-[0_20px_60px_-30px_rgba(15,23,42,0.35)]">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-600">Operational snapshot</p>
+              <h2 className="mt-2 text-2xl font-semibold text-slate-900">Daily barangay activity at a glance</h2>
             </div>
-
-            <RecentActivity />
-
+            <div className="rounded-2xl bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700">Updated today</div>
           </div>
-
-          {/* Residents + Announcements */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
-
-            <div className="lg:col-span-2">
-              <ResidentsTable />
-            </div>
-
-            <AnnouncementCard />
-
+          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <StatCard title="Residents" value={stats.residentCount} icon={Users} />
+            <StatCard title="Active Residents" value={stats.activeCount} icon={UserCheck} />
+            <StatCard title="Inactive Residents" value={stats.inactiveCount} icon={UserX} />
+            <StatCard title="Households" value={0} icon={Home} />
           </div>
-
         </div>
-      </main>
-    </div>
+
+        <div className="rounded-[28px] border border-slate-200 bg-slate-950 p-6 text-white shadow-[0_20px_60px_-30px_rgba(15,23,42,0.45)]">
+          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-300">Priority tasks</p>
+          <ul className="mt-5 space-y-3 text-sm text-slate-300">
+            <li>• Review new resident submissions</li>
+            <li>• Verify pending certificates</li>
+            <li>• Follow up on blotter updates</li>
+            <li>• Publish new announcements</li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="mt-8">
+        <QuickActions />
+      </div>
+
+      <div className="mt-8 grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <ResidentsChart />
+        </div>
+        <RecentActivity />
+      </div>
+
+      <div className="mt-8 grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <ResidentsTable />
+        </div>
+        <AnnouncementCard />
+      </div>
+    </PageShell>
   );
 }
