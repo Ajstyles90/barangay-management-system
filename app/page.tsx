@@ -8,8 +8,8 @@ export default function Home() {
         <header className="flex flex-col gap-4 rounded-[28px] border border-slate-200/80 bg-slate-950 px-6 py-8 text-white shadow-2xl shadow-slate-900/20 md:flex-row md:items-end md:justify-between md:px-8">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-cyan-300">Barangay operations</p>
-            <h1 className="mt-3 text-4xl font-semibold sm:text-5xl">Centralized civic services for modern barangay management.</h1>
-            <p className="mt-4 max-w-2xl text-base text-slate-300 sm:text-lg">Manage residents, households, certificates, blotter records, and announcements from a secure, premium dashboard built for real municipal work.</p>
+            <h1 className="mt-3 text-4xl font-semibold sm:text-5xl">Official Website Of Barangay Shembot Boys.</h1>
+            <p className="mt-4 max-w-2xl text-base text-slate-300 sm:text-lg">Manage katarantaduhan, kagaguhan, hararampangan, at irinuman from one premium dashboard for tunay na Parainom.</p>
           </div>
           <Link href="/dashboard" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-500 px-5 py-3 font-semibold text-slate-950 transition hover:bg-cyan-400">Enter Dashboard <ArrowRight size={18} /></Link>
         </header>
@@ -44,10 +44,10 @@ export default function Home() {
           <div className="rounded-[28px] border border-slate-200 bg-gradient-to-br from-slate-900 via-slate-800 to-cyan-700 p-6 text-white shadow-[0_20px_60px_-30px_rgba(15,23,42,0.4)]">
             <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">System highlights</p>
             <ul className="mt-5 space-y-3 text-sm text-slate-100">
-              <li>• Premium dashboard layout with modern cards and spacing</li>
-              <li>• Resident management with add, edit, and delete workflows</li>
-              <li>• Household, certificate, blotter, and announcements modules</li>
-              <li>• Responsive design for desktop and mobile experience</li>
+              <li>• Premium dashboard para sa mga Shembotboys pero astig</li>
+              <li>• Manage katarantaduhan, kalokohan, at kulitan nang madali</li>
+              <li>• Irinuman, tsismisan, harampangan, at reunion tracker</li>
+              <li>• Responsive sa desktop, mobile, pati sa tindahan ni Ate Myles</li>
             </ul>
           </div>
         </section>
